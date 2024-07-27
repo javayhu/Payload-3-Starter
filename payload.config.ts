@@ -4,6 +4,7 @@ import { siteSettings } from '@/payload/globals/site-settings'
 import { S3_PLUGIN_CONFIG } from '@/payload/plugins/s3'
 import generateBreadcrumbsUrl from '@/payload/utils/generateBreadcrumbsUrl'
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
+import { postgresAdapter } from '@payloadcms/db-postgres'
 import { resendAdapter } from '@payloadcms/email-resend'
 import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
 import { seoPlugin } from '@payloadcms/plugin-seo'
@@ -39,8 +40,13 @@ export default buildConfig({
     features: ({ defaultFeatures }) => [...defaultFeatures, FixedToolbarFeature()]
   }),
   secret: process.env.AUTH_SECRET || '',
-  db: mongooseAdapter({
-    url: process.env.MONGODB_URI || ''
+  // db: mongooseAdapter({
+  //   url: process.env.DATABASE_URI || ''
+  // }),
+  db: postgresAdapter({
+    pool: {
+      connectionString: process.env.DATABASE_URI || '',
+    },
   }),
   serverURL: process.env.NEXT_PUBLIC_SITE_URL,
   email:

@@ -14,7 +14,7 @@ export type HeaderMenu =
   | {
       page?: {
         relationTo: 'pages';
-        value: string | Page;
+        value: number | Page;
       } | null;
       icon?:
         | (
@@ -913,7 +913,7 @@ export type HeaderMenu =
         | {
             page?: {
               relationTo: 'pages';
-              value: string | Page;
+              value: number | Page;
             } | null;
             icon?:
               | (
@@ -1812,7 +1812,7 @@ export type HeaderMenu =
               | {
                   page?: {
                     relationTo: 'pages';
-                    value: string | Page;
+                    value: number | Page;
                   } | null;
                   icon?:
                     | (
@@ -2724,7 +2724,7 @@ export type FooterMenu =
   | {
       page?: {
         relationTo: 'pages';
-        value: string | Page;
+        value: number | Page;
       } | null;
       icon?:
         | (
@@ -3638,7 +3638,7 @@ export interface Config {
     'payload-migrations': PayloadMigration;
   };
   globals: {
-    'site-settings': SiteSetting;
+    ss: Ss;
   };
   locale: null;
   user: User & {
@@ -3650,7 +3650,7 @@ export interface Config {
  * via the `definition` "users".
  */
 export interface User {
-  id: string;
+  id: number;
   name?: string | null;
   imageUrl?: string | null;
   role?: ('admin' | 'user') | null;
@@ -3687,7 +3687,7 @@ export interface User {
  * via the `definition` "pages".
  */
 export interface Page {
-  id: string;
+  id: number;
   title?: string | null;
   blocks?:
     | (
@@ -3700,17 +3700,22 @@ export interface Page {
         | PricingTableBlock
       )[]
     | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    image?: number | Media | null;
+  };
   slug?: string | null;
   path?: string | null;
-  parent?: (string | null) | Page;
   breadcrumbs?:
     | {
-        doc?: (string | null) | Page;
+        doc?: (number | null) | Page;
         url?: string | null;
         label?: string | null;
         id?: string | null;
       }[]
     | null;
+  parent?: (number | null) | Page;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -3724,7 +3729,7 @@ export interface HeroBannerBlock {
   preTitle?: string | null;
   title: string;
   subtitle?: string | null;
-  backgroundImage: string | Media;
+  backgroundImage: number | Media;
   id?: string | null;
   blockName?: string | null;
   blockType: 'HeroBanner';
@@ -3734,7 +3739,7 @@ export interface HeroBannerBlock {
  * via the `definition` "media".
  */
 export interface Media {
-  id: string;
+  id: number;
   title?: string | null;
   rawContent?: string | null;
   prefix?: string | null;
@@ -3747,6 +3752,8 @@ export interface Media {
   filesize?: number | null;
   width?: number | null;
   height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
   sizes?: {
     thumbnail?: {
       url?: string | null;
@@ -4672,7 +4679,7 @@ export interface LogoMarqueeBlock {
   speed?: number | null;
   logos?:
     | {
-        logo: string | Media;
+        logo: number | Media;
         id?: string | null;
       }[]
     | null;
@@ -4718,7 +4725,7 @@ export interface FaqBlock {
 export interface FormBlock {
   title?: string | null;
   description?: string | null;
-  form: string | Form;
+  form: number | Form;
   id?: string | null;
   blockName?: string | null;
   blockType: 'FormBlock';
@@ -4728,7 +4735,7 @@ export interface FormBlock {
  * via the `definition` "forms".
  */
 export interface Form {
-  id: string;
+  id: number;
   title: string;
   fields?:
     | (
@@ -4850,7 +4857,7 @@ export interface Form {
     type?: ('reference' | 'custom') | null;
     reference?: {
       relationTo: 'pages';
-      value: string | Page;
+      value: number | Page;
     } | null;
     url?: string | null;
   };
@@ -4917,7 +4924,7 @@ export interface PricingTableBlock {
     | {
         product?: {
           relationTo: 'products';
-          value: string | Product;
+          value: number | Product;
         } | null;
         id?: string | null;
       }[]
@@ -4931,14 +4938,14 @@ export interface PricingTableBlock {
  * via the `definition` "products".
  */
 export interface Product {
-  id: string;
+  id: number;
   active: boolean;
   name: string;
   description?: string | null;
   image?: string | null;
   prices?:
     | {
-        price: string | Price;
+        price: number | Price;
         id?: string | null;
       }[]
     | null;
@@ -4958,10 +4965,10 @@ export interface Product {
  * via the `definition` "prices".
  */
 export interface Price {
-  id: string;
+  id: number;
   stripeID: string;
   stripeProductId: string;
-  product?: (string | null) | Product;
+  product?: (number | null) | Product;
   active: boolean;
   description?: string | null;
   unitAmount: number;
@@ -4978,8 +4985,8 @@ export interface Price {
  * via the `definition` "sessions".
  */
 export interface Session {
-  id: string;
-  user: string | User;
+  id: number;
+  user: number | User;
   sessionToken: string;
   expires?: string | null;
   updatedAt: string;
@@ -4990,9 +4997,9 @@ export interface Session {
  * via the `definition` "subscriptions".
  */
 export interface Subscription {
-  id: string;
-  user: string | User;
-  product: string | Product;
+  id: number;
+  user: number | User;
+  product: number | Product;
   status: 'trialing' | 'active' | 'canceled' | 'incomplete' | 'incomplete_expired' | 'past_due' | 'unpaid' | 'paused';
   created?: string | null;
   currentPeriodStart?: string | null;
@@ -5022,8 +5029,8 @@ export interface Subscription {
  * via the `definition` "form-submissions".
  */
 export interface FormSubmission {
-  id: string;
-  form: string | Form;
+  id: number;
+  form: number | Form;
   submissionData?:
     | {
         field: string;
@@ -5039,10 +5046,10 @@ export interface FormSubmission {
  * via the `definition` "payload-preferences".
  */
 export interface PayloadPreference {
-  id: string;
+  id: number;
   user: {
     relationTo: 'users';
-    value: string | User;
+    value: number | User;
   };
   key?: string | null;
   value?:
@@ -5062,7 +5069,7 @@ export interface PayloadPreference {
  * via the `definition` "payload-migrations".
  */
 export interface PayloadMigration {
-  id: string;
+  id: number;
   name?: string | null;
   batch?: number | null;
   updatedAt: string;
@@ -5070,10 +5077,10 @@ export interface PayloadMigration {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "site-settings".
+ * via the `definition` "ss".
  */
-export interface SiteSetting {
-  id: string;
+export interface Ss {
+  id: number;
   appName?: string | null;
   appDescription?: string | null;
   header?: {
