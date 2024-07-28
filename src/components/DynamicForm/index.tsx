@@ -137,7 +137,9 @@ export default function DynamicForm({ endpoint, form, locale }: { endpoint: stri
         if (form?.redirect?.url) {
           // eslint-disable-next-line react-compiler/react-compiler
           window.location.href = form.redirect.url
-        } else if (typeof form.redirect?.reference?.value !== 'string') {
+        } else if (typeof form.redirect?.reference?.value !== 'string'
+          && typeof form.redirect?.reference?.value !== 'number'
+        ) { // mongodb string | Page, postgres number | Page
           router.push(form.redirect?.reference?.value?.path || '/')
         }
       }

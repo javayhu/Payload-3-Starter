@@ -43,6 +43,7 @@ export default buildConfig({
   // db: mongooseAdapter({
   //   url: process.env.DATABASE_URI || ''
   // }),
+  // types generated will be different for each dbAdapter
   db: postgresAdapter({
     pool: {
       connectionString: process.env.DATABASE_URI || '',
